@@ -9,8 +9,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint lib",
     "build": "./node_modules/.bin/babel lib --out-dir dist",
-    "dev": "npm run build -- -w -s",
-    "install": "npm run build"
+    "dev": "npm run build -- -w -s"
   },
   "dependencies": {
     "chalk": "^1.1.1",
