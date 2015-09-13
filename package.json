@@ -1,0 +1,36 @@
+{
+  "name": "metalsmith-webpack",
+  "version": "0.1.0",
+  "description": "A webpack plugin for Metalsmith",
+  "engines": {
+    "node": ">=0.11"
+  },
+  "main": "dist/metalsmith-webpack.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint lib",
+    "build": "./node_modules/.bin/babel lib --out-dir dist",
+    "dev": "npm run build -- -w -s",
+    "install": "npm run build"
+  },
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "memory-fs": "^0.2.0",
+    "supports-color": "^3.1.1",
+    "vinyl-fs": "^1.0.0",
+    "webpack": "^1.12.1"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.1",
+    "eslint": "^1.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nealgranger/metalsmith-webpack.git.git"
+  },
+  "author": "Neal Granger <neal@nealg.com> (http://nealg.com)",
+  "bugs": {
+    "url": "https://github.com/nealgranger/metalsmith-webpack.git/issues"
+  },
+  "homepage": "https://github.com/nealgranger/metalsmith-webpack.git"
+}
