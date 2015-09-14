@@ -29,14 +29,77 @@ var _chalk = require("chalk");
 var _chalk2 = _interopRequireDefault(_chalk);
 
 exports["default"] = function (options) {
+  var _metalsmith = undefined;
+  var _files = undefined;
+
+  options = _extends({}, options, {
+    context: _path2["default"].resolve(options.context || process.cwd()),
+    output: _extends({}, options.output, {
+      path: _path2["default"].resolve(options.output.path || process.cwd())
+    }),
+    watch: false
+  });
+
+  var defaultOutputOptions = {
+    colors: _supportsColor2["default"],
+    chunks: true,
+    modules: true,
+    chunkModules: true,
+    reasons: true,
+    cached: true,
+    cachedAssets: true
+  };
+
+  if (options.stats && !options.stats.json) {
+    defaultOutputOptions = _extends({}, defaultOutputOptions, {
+      cached: false,
+      cachedAssets: false,
+      exclude: ["node_modules", "bower_components", "jam", "components"]
+    });
+  }
+
+  var outputOptions = _extends({}, defaultOutputOptions, options.stats || options.stats || {});
+
+  var compiler = (0, _webpack2["default"])(options);
+  var fs = compiler.outputFileSystem = new _memoryFs2["default"]();
+  var lastHash = null;
+
+  compiler.plugin("after-emit", function (compilation, callback) {
+    Object.keys(compilation.assets).forEach(function (outname) {
+      var asset = compilation.assets[outname];
+      var filePath = asset.existsAt;
+      var name = _path2["default"].relative(_metalsmith.destination(), filePath);
+
+      if (asset.emitted) {
+        var contents = fs.readFileSync(filePath);
+        _files[name] = {};
+        _files[name].contents = contents;
+        _files[name].fileName = filePath;
+      }
+    });
+
+    _metalsmith.write(_files, function (err) {
+      console.log();
+      Object.keys(_files).forEach(function (fileName) {
+        console.log(_chalk2["default"].magenta("[metalsmith-webpack]") + " writing " + _chalk2["default"].cyan(fileName));
+      });
+      if (err) {
+        callback(err);
+      }
+      callback();
+    });
+  });
+
   return function (files, metalsmith, done) {
 
     if (!options.entry || !options.output.filename) {
       return done(null, files);
     }
 
-    console.log();
-    console.log(_chalk2["default"].magenta("[metalsmith-webpack]") + " starting");
+    _metalsmith = metalsmith;
+    _files = {};
+
+    console.log("\n" + _chalk2["default"].magenta("[metalsmith-webpack]") + " starting");
 
     options = _extends({}, options, {
       context: _path2["default"].resolve(options.context || process.cwd()),
@@ -46,40 +109,9 @@ exports["default"] = function (options) {
       watch: false
     });
 
-    var defaultOutputOptions = {
-      colors: _supportsColor2["default"],
-      chunks: true,
-      modules: true,
-      chunkModules: true,
-      reasons: true,
-      cached: true,
-      cachedAssets: true
-    };
-
-    if (options.stats && !options.stats.json) {
-      defaultOutputOptions = _extends({}, defaultOutputOptions, {
-        cached: false,
-        cachedAssets: false,
-        exclude: ["node_modules", "bower_components", "jam", "components"]
-      });
-    }
-
-    var outputOptions = _extends({}, defaultOutputOptions, options.stats || options.stats || {});
-
-    var lastHash = null;
-    function compilerCallback(err, stats) {
-      if (!options.watch) {
-        // Do not keep cache anymore
-        compiler.purgeInputFileSystem();
-      }
-
+    compiler.run(function (err, stats) {
       if (err) {
-        lastHash = null;
-        console.error(err.stack || err);
-        if (err.details) {
-          console.error(err.details);
-        }
-        return;
+        return done(err);
       }
 
       if (outputOptions.json) {
@@ -93,46 +125,16 @@ exports["default"] = function (options) {
         console.log(prefix + output);
         console.log();
       }
-    }
 
-    var compiler = (0, _webpack2["default"])(options, compilerCallback);
-
-    var fs = compiler.outputFileSystem = new _memoryFs2["default"]();
-
-    compiler.plugin("after-emit", function (compilation, callback) {
-
-      var newFiles = {};
-
-      console.log();
-
-      Object.keys(compilation.assets).forEach(function (outname) {
-        var asset = compilation.assets[outname];
-        var filePath = asset.existsAt;
-        var name = _path2["default"].relative(metalsmith.destination(), filePath);
-
-        if (asset.emitted) {
-          var contents = fs.readFileSync(filePath);
-          files[name] = files[name] || {};
-          files[name].contents = contents;
-          files[name].fileName = filePath;
-
-          newFiles[name] = files[name];
-          console.log(_chalk2["default"].magenta("[metalsmith-webpack]") + " writing " + _chalk2["default"].cyan(filePath));
-        }
+      files = _extends({}, _files, {
+        files: files
       });
 
-      metalsmith.write(newFiles, function (err) {
-        if (err) {
-          done(err);
-        } else {
-          done(null, files);
-        }
-
-        callback();
-      });
+      done(null, files);
     });
   };
 };
 
 ;
 module.exports = exports["default"];
+//# sourceMappingURL=metalsmith-webpack.js.map
