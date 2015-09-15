@@ -110,6 +110,8 @@ exports["default"] = function (options) {
     });
 
     compiler.run(function (err, stats) {
+      compiler.purgeInputFileSystem();
+
       if (err) {
         return done(err);
       }
