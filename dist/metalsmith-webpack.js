@@ -64,6 +64,37 @@ exports["default"] = function (options) {
   var fs = compiler.outputFileSystem = new _memoryFs2["default"]();
   var lastHash = null;
 
+  compiler.plugin("emit", function (compilation, callback) {
+    var stats = compilation.getStats().toJson();
+    var metadata = _metalsmith.metadata();
+    var assetsByChunkName = stats.assetsByChunkName;
+
+    var assets = Object.keys(assetsByChunkName).reduce(function (reduced, chunkName) {
+      var chunkAsset = assetsByChunkName[chunkName];
+
+      if (Array.isArray(chunkAsset)) {
+        var chunkAssets = chunkAsset.reduce(function (chunkObj, file) {
+          chunkObj[chunkName + _path2["default"].extname(file)] = file;
+          return chunkObj;
+        }, {});
+        return _extends({}, reduced, chunkAssets);
+      }
+
+      reduced[chunkName + _path2["default"].extname(chunkAsset)] = chunkAsset;
+      return reduced;
+    }, {});
+
+    var assetsByType = Object.keys(assets).reduce(function (reduced, assetName) {
+      var ext = _path2["default"].extname(assetName).replace(/^\./, "");
+      reduced[ext] = [assets[assetName]].concat(reduced[ext] || []);
+      return reduced;
+    }, {});
+
+    metadata.webpack = { assets: assets, assetsByType: assetsByType };
+
+    callback();
+  });
+
   compiler.plugin("after-emit", function (compilation, callback) {
     Object.keys(compilation.assets).forEach(function (outname) {
       var asset = compilation.assets[outname];
