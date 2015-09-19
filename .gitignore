@@ -3,5 +3,7 @@ npm-debug.log
 
 **/*.map
 
+coverage
+
 # Dependency directory
 node_modules
