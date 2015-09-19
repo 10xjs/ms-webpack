@@ -86,13 +86,11 @@ var MetalsmithWebpack = (function () {
   _createClass(MetalsmithWebpack, [{
     key: 'setMetadata',
     value: function setMetadata() {
-      var _this2 = this;
-
       var assetsByChunkName = this.compilation.getStats().toJson().assetsByChunkName;
+      var publicPath = this.compiler.options.output.publicPath || '';
 
       var assets = Object.keys(assetsByChunkName).reduce(function (reduced, chunkName) {
         var chunkAsset = assetsByChunkName[chunkName];
-        var publicPath = _this2.compiler.options.output.publicPath || '';
 
         if (Array.isArray(chunkAsset)) {
           var chunkAssets = chunkAsset.reduce(function (chunkObj, file) {
@@ -108,7 +106,7 @@ var MetalsmithWebpack = (function () {
 
       var assetsByType = Object.keys(this.compilation.assets).reduce(function (reduced, assetName) {
         var ext = _path2['default'].extname(assetName).replace(/^\./, '');
-        reduced[ext] = (reduced[ext] || []).concat([assetName]);
+        reduced[ext] = (reduced[ext] || []).concat([_path2['default'].join(publicPath, assetName)]);
         return reduced;
       }, {});
 
@@ -117,39 +115,39 @@ var MetalsmithWebpack = (function () {
   }, {
     key: 'setFiles',
     value: function setFiles() {
-      var _this3 = this;
+      var _this2 = this;
 
       var fs = this.compiler.outputFileSystem;
       Object.keys(this.compilation.assets).forEach(function (outname) {
-        var asset = _this3.compilation.assets[outname];
+        var asset = _this2.compilation.assets[outname];
 
         if (asset.emitted) {
           var fileName = asset.existsAt;
-          var _name = _path2['default'].relative(_this3.metalsmith.destination(), fileName);
+          var _name = _path2['default'].relative(_this2.metalsmith.destination(), fileName);
           var contents = fs.readFileSync(fileName);
-          _this3.files[_name] = { contents: contents, fileName: fileName };
+          _this2.files[_name] = { contents: contents, fileName: fileName };
         }
       });
     }
   }, {
     key: 'plugin',
     value: function plugin() {
-      var _this4 = this;
+      var _this3 = this;
 
       return function (files, metalsmith, done) {
         var destination = metalsmith.destination();
-        var outputPath = _this4.compiler.options.output.path;
+        var outputPath = _this3.compiler.options.output.path;
 
         if (_path2['default'].relative(destination, outputPath).startsWith('../')) {
           throw new DestinationError(destination, outputPath);
         }
 
-        _this4.metalsmith = metalsmith;
-        _this4.files = files;
+        _this3.metalsmith = metalsmith;
+        _this3.files = files;
 
         console.log('\n' + _chalk2['default'].magenta('[metalsmith-webpack]') + ' compiling...');
 
-        _this4.compiler.run(done);
+        _this3.compiler.run(done);
       };
     }
   }], [{
