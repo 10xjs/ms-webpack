@@ -1,6 +1,8 @@
 # metalsmith-webpack
 
-[![Build Status](https://travis-ci.org/nealgranger/metalsmith-webpack.svg?branch=master)](https://travis-ci.org/nealgranger/metalsmith-webpack)[![Coverage Status](https://coveralls.io/repos/nealgranger/metalsmith-webpack/badge.svg?branch=master&service=github)](https://coveralls.io/github/nealgranger/metalsmith-webpack?branch=master)
+[![Build Status](https://travis-ci.org/nealgranger/metalsmith-webpack.svg?branch=master)](https://travis-ci.org/nealgranger/metalsmith-webpack)
+[![Dependency Status](https://gemnasium.com/nealgranger/metalsmith-webpack.svg)](https://gemnasium.com/nealgranger/metalsmith-webpack)
+[![Coverage Status](https://coveralls.io/repos/nealgranger/metalsmith-webpack/badge.svg?branch=master&service=github)](https://coveralls.io/github/nealgranger/metalsmith-webpack?branch=master)
 
 A [webpack][webpack] plugin for [Metalsmith][metalsmith].
 
