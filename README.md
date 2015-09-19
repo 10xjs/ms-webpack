@@ -22,6 +22,7 @@ var config = {
   },
   output: {
     path: './build',
+    publicPath: '/',
     filename: 'js/[name].[chunkhash].js'
   },
   // ...
@@ -40,21 +41,21 @@ See the [webpack configuration][webpack configuration] documentation for details
 
 ### Referencing compiled files in templates
 
-metalsmith-webpack populates metalsmith metadata with the output status from webpack. If your output file names are dynamic, this provides a way to automatically resolve them in your template.
+metalsmith-webpack populates metalsmith metadata with the output file paths from webpack. If your output file names are dynamic, this provides a way to automatically resolve them in your template.
 
 `metadata.webpack.assets` maps of all source file names to their corresponding output files. eg:
 ```js
 {
-  "main.js": "js/main.1234567890.js",
-  "main.css": "css/main.1234567890.css",
-  "vendor.js": "js/vendor.654210987.js"
+  "main.js": "/js/main.1234567890.js",
+  "main.css": "/css/main.1234567890.css",
+  "vendor.js": "/js/vendor.654210987.js"
 }
 ```
 `metadata.webpack.assetsByType` is a map of all output files sorted by file extension. eg:
 ```js
 {
-  "js": ["js/main.1234567890.js", "js/vendor.654210987.js"]
-  "css": ["css/main.7654321098.css"]
+  "js": ["/js/main.1234567890.js", "/js/vendor.654210987.js"]
+  "css": ["/css/main.7654321098.css"]
 }
 ```
 example medatada use in a template
@@ -64,13 +65,13 @@ html
     - var styleSheets = webpack.assetsByType.css
     if styleSheets
       each file in styleSheets
-        link(rel="stylesheet" href="/" + file)
+        link(rel="stylesheet" href=file)
   body
     //- ...
     - var scripts = webpack.assetsByType.js
     if scripts
       each file in scripts
-        script(src="/" + file)
+        script(src=file)
 
 ```
 ## Development
@@ -82,6 +83,6 @@ Compile and watch with `$ npm run dev`
 MIT License, see [LICENSE][license] for details.
 
 [metalsmith]: http://www.metalsmith.io/
-[license]: https://github.com/nealgranger/metalsmith-webpack/blob/master/LICENSE.md
+[license]: LICENSE.md
 [webpack]: http://webpack.github.io/
 [webpack configuration]: http://webpack.github.io/docs/configuration.html

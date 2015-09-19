@@ -5,11 +5,11 @@
   "engines": {
     "node": ">=0.11"
   },
-  "main": "dist/metalsmith-webpack.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint lib",
     "build": "./node_modules/.bin/babel lib --out-dir dist",
-    "dev": "npm run build -- -w -s"
+    "dev": "npm run build -- -w -s",
+    "test": "./node_modules/.bin/mocha --harmony"
   },
   "dependencies": {
     "chalk": "^1.1.1",

@@ -101,8 +101,8 @@
     // use one variable declaration for each variable you want to define
     "one-var": [2, "never"],
 
-    // enforce double quotes
-    "quotes": [2, "double"],
+    // enforce single quotes
+    "quotes": [2, "single"],
 
     // Enforce whitespace for visual clarity.
     "space-after-keywords": [2, "always"],
