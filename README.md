@@ -1,5 +1,7 @@
 # metalsmith-webpack
 
+[![Build Status](https://travis-ci.org/nealgranger/metalsmith-webpack.svg?branch=master)](https://travis-ci.org/nealgranger/metalsmith-webpack)
+
 A [webpack][webpack] plugin for [Metalsmith][metalsmith].
 
 ## Installation
