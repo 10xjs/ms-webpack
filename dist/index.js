@@ -106,9 +106,9 @@ var MetalsmithWebpack = (function () {
         return reduced;
       }, {});
 
-      var assetsByType = Object.keys(assets).reduce(function (reduced, assetName) {
+      var assetsByType = Object.keys(this.compilation.assets).reduce(function (reduced, assetName) {
         var ext = _path2['default'].extname(assetName).replace(/^\./, '');
-        reduced[ext] = [assets[assetName]].concat(reduced[ext] || []);
+        reduced[ext] = (reduced[ext] || []).concat([assetName]);
         return reduced;
       }, {});
 
@@ -215,3 +215,4 @@ exports['default'] = function (options) {
 };
 
 ;
+//# sourceMappingURL=index.js.map
