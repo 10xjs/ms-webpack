@@ -15,32 +15,67 @@ add to your package.js dependencies
 var webpack = require('metalsmith-webpack')
 
 var config = {
-  context: './src/assets/js/',
-  entry: './index.js',
+  context: './src/assets/',
+  entry: {
+    main: ['./js/main.js', './css/main.css'],
+    vendor: './js/ventor.js'
+  },
   output: {
     path: './build',
-    path: '/js',
-     filename: 'bundle.js'
-   }
+    filename: 'js/[name].[chunkhash].js'
+  },
+  // ...
 }
 
 Metalsmith(__dirname)
-  .src('./src')
   .ignore('assets')
   .use(webpack(config))
-  .dest('./build')
-  .build()
+  .build();
 ```
+It is necessary to manually use `ignore()` to prevent metalsmith from copying the files referenced by webpack if they are within the metalsmith source directory.
 
 ### Options
 
 See the [webpack configuration][webpack configuration] documentation for details.
 
-## Development
+### Referencing compiled files in templates
+
+metalsmith-webpack populates metalsmith metadata with the output status from webpack. If your output file names are dynamic, this provides a way to automatically resolve them in your template.
+
+`metadata.webpack.assets` maps of all source file names to their corresponding output files. eg:
+```js
+{
+  "main.js": "js/main.1234567890.js",
+  "main.css": "css/main.1234567890.css",
+  "vendor.js": "js/vendor.654210987.js"
+}
+```
+`metadata.webpack.assetsByType` is a map of all output files sorted by file extension. eg:
+```js
+{
+  "js": ["js/main.1234567890.js", "js/vendor.654210987.js"]
+  "css": ["css/main.7654321098.css"]
+}
+```
+example medatada use in a template
+```jade
+html
+  head
+    - var styleSheets = webpack.assetsByType.css
+    if styleSheets
+      each file in styleSheets
+        link(rel="stylesheet" href="/" + file)
+  body
+    //- ...
+    - var scripts = webpack.assetsByType.js
+    if scripts
+      each file in scripts
+        script(src="/" + file)
 
 ```
-$ npm run dev
-```
+## Development
+
+Compile and watch with `$ npm run dev`
 
 ## License
 
