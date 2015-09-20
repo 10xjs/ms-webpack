@@ -14,7 +14,7 @@ var config = {
   entry: './js/index.js',
   output: {
     path: 'test/build',
-    publicPath: "/",
+    publicPath: "http://cdn.example.com/assets/[hash]/",
     filename: 'js/[name].js'
   },
   devtool: 'source-map'
@@ -22,12 +22,12 @@ var config = {
 
 var metadata = {
   assets: {
-    'main.js': '/js/main.js',
-    'main.map': '/js/main.js.map'
+    'main.js': 'http://cdn.example.com/assets/c06919e5a1001b7c1ed5/js/main.js',
+    'main.map': 'http://cdn.example.com/assets/c06919e5a1001b7c1ed5/js/main.js.map'
   },
   assetsByType: {
-    js: [ '/js/main.js' ],
-    map: [ '/js/main.js.map' ]
+    js: [ 'http://cdn.example.com/assets/c06919e5a1001b7c1ed5/js/main.js' ],
+    map: [ 'http://cdn.example.com/assets/c06919e5a1001b7c1ed5/js/main.js.map' ]
   }
 }
 

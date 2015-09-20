@@ -87,14 +87,15 @@ var MetalsmithWebpack = (function () {
     key: 'setMetadata',
     value: function setMetadata() {
       var assetsByChunkName = this.compilation.getStats().toJson().assetsByChunkName;
-      var publicPath = this.compiler.options.output.publicPath || '';
-
+      var publicPath = this.compilation.mainTemplate.getPublicPath({
+        hash: this.compilation.hash
+      });
       var assets = Object.keys(assetsByChunkName).reduce(function (reduced, chunkName) {
         var chunkAsset = assetsByChunkName[chunkName];
 
         if (Array.isArray(chunkAsset)) {
           var chunkAssets = chunkAsset.reduce(function (chunkObj, file) {
-            chunkObj[chunkName + _path2['default'].extname(file)] = _path2['default'].join(publicPath, file);
+            chunkObj[chunkName + _path2['default'].extname(file)] = publicPath + file;
             return chunkObj;
           }, {});
           return _extends({}, reduced, chunkAssets);
@@ -106,7 +107,7 @@ var MetalsmithWebpack = (function () {
 
       var assetsByType = Object.keys(this.compilation.assets).reduce(function (reduced, assetName) {
         var ext = _path2['default'].extname(assetName).replace(/^\./, '');
-        reduced[ext] = (reduced[ext] || []).concat([_path2['default'].join(publicPath, assetName)]);
+        reduced[ext] = (reduced[ext] || []).concat([publicPath + assetName]);
         return reduced;
       }, {});
 
@@ -213,4 +214,3 @@ exports['default'] = function (options) {
 };
 
 ;
-//# sourceMappingURL=index.js.map
