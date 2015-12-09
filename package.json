@@ -1,6 +1,6 @@
 {
   "name": "ms-webpack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A webpack plugin for Metalsmith",
   "engines": {
     "node": ">=5.0.0"
