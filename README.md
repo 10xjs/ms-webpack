@@ -1,22 +1,21 @@
-# metalsmith-webpack
+# ms-webpack
 
-[![Build Status](https://travis-ci.org/nealgranger/metalsmith-webpack.svg?branch=master)](https://travis-ci.org/nealgranger/metalsmith-webpack)
-[![Dependency Status](https://gemnasium.com/nealgranger/metalsmith-webpack.svg)](https://gemnasium.com/nealgranger/metalsmith-webpack)
-[![Coverage Status](https://coveralls.io/repos/nealgranger/metalsmith-webpack/badge.svg?branch=master&service=github)](https://coveralls.io/github/nealgranger/metalsmith-webpack?branch=master)
+[![Build Status](https://travis-ci.org/nealgranger/ms-webpack.svg?branch=master)](https://travis-ci.org/nealgranger/ms-webpack)
+[![Dependency Status](https://gemnasium.com/nealgranger/ms-webpack.svg)](https://gemnasium.com/nealgranger/ms-webpack)
+[![Coverage Status](https://coveralls.io/repos/nealgranger/ms-webpack/badge.svg?branch=master&service=github)](https://coveralls.io/github/nealgranger/ms-webpack?branch=master)
 
 A [webpack][webpack] plugin for [Metalsmith][metalsmith].
-
 ## Installation
 
 add to your package.js dependencies
-```json
-"metalsmith-webpack": "https://github.com/nealgranger/metalsmith-webpack.git#master"
+```
+npm install --save ms-webpack
 ```
 
 ## Usage
 
 ```js
-var webpack = require('metalsmith-webpack')
+var webpack = require('ms-webpack')
 
 var config = {
   context: './src/assets/',
@@ -45,7 +44,7 @@ See the [webpack configuration][webpack configuration] documentation for details
 
 ### Referencing compiled files in templates
 
-metalsmith-webpack populates metalsmith metadata with the output file paths from webpack. If your output file names are dynamic, this provides a way to automatically resolve them in your template.
+ms-webpack populates metalsmith metadata with the output file paths from webpack. If your output file names are dynamic, this provides a way to automatically resolve them in your template.
 
 `metadata.webpack.assets` maps of all source file names to their corresponding output files. eg:
 ```js
