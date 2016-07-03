@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "chalk": "^1.1.1",
+    "memory-fs": "^0.3.0",
     "supports-color": "^3.1.1",
     "vinyl-fs": "^2.2.1",
     "webpack": "^1.12.9"
@@ -30,7 +31,6 @@
     "eslint-config-metalab": "^1.0.0-rc.1",
     "istanbul": "^0.4.1",
     "jade": "^1.11.0",
-    "memory-fs": "^0.3.0",
     "metalsmith": "^2.0.1",
     "metalsmith-in-place": "^1.3.1",
     "metalsmith-rename": "^1.0.0",
