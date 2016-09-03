@@ -1,10 +1,10 @@
 /* eslint-env mocha */
 import Metalsmith from 'metalsmith';
 import assert from 'assert';
-import { sync as rmSync } from 'rimraf';
+import {sync as rmSync} from 'rimraf';
 import path from 'path';
-import { readdirSync } from 'fs';
-import metalsmithWebpack, { MetalsmithWebpack } from '../../lib';
+import {readdirSync} from 'fs';
+import metalsmithWebpack, {MetalsmithWebpack} from '../../lib';
 
 const config = {
   context: 'test/fixture/src',
@@ -32,30 +32,30 @@ describe('metalsmith-webpack', () => {
     assert.equal(path.resolve(config.output.path), resolved.output.path);
   });
 
-  it('should output files', done => {
-    const files = [ 'main.js' ];
+  it('should output files', (done) => {
+    const files = ['main.js'];
 
     Metalsmith('test')
       .source('fixture/src')
       .destination('build')
       .ignore('js')
-      .use(metalsmithWebpack({ ...config, stats: { json: true } }))
-      .build(err => {
+      .use(metalsmithWebpack({...config, stats: {json: true}}))
+      .build((err) => {
         if (err) return done(err);
         assert.deepEqual(readdirSync('test/build'), files);
-        done();
+        return done();
       });
   });
 
-  it('should set metadata', done => {
+  it('should set metadata', (done) => {
     const metadata = {
       assets: {
         'main.js': 'http://example.com/assets/main.js',
         'main.map': 'http://example.com/assets/main.js.map',
       },
       assetsByType: {
-        js: [ 'http://example.com/assets/main.js' ],
-        map: [ 'http://example.com/assets/main.js.map' ],
+        js: ['http://example.com/assets/main.js'],
+        map: ['http://example.com/assets/main.js.map'],
       },
     };
 
@@ -63,23 +63,23 @@ describe('metalsmith-webpack', () => {
       .source('fixture/src')
       .destination('build')
       .ignore('js')
-      .use(metalsmithWebpack({ ...config, devtool: 'source-maps' }));
+      .use(metalsmithWebpack({...config, devtool: 'source-maps'}));
 
-    m.build(err => {
+    m.build((err) => {
       if (err) return done(err);
       assert.deepEqual(m.metadata().webpack, metadata);
-      done();
+      return done();
     });
   });
 
   it('should throw error if output path is outside of metalsmith destination',
-    done => {
+    (done) => {
       Metalsmith('test')
         .source('fixture/src')
         .destination('foo')
         .ignore('js')
         .use(metalsmithWebpack(config))
-        .build(err => {
+        .build((err) => {
           assert.equal(
             err.message,
             'Webpack output path is outside of metalsmith destination.'
