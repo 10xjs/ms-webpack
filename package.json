@@ -2,6 +2,7 @@
   "name": "ms-webpack",
   "version": "1.0.1",
   "description": "A webpack plugin for Metalsmith",
+  "license": "CC0-1.0",
   "engines": {
     "node": ">=5.0.0"
   },
