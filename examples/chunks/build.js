@@ -10,7 +10,7 @@ metalsmith(__dirname)
   .use(webpack(require('./webpack.config.js')))
   .use(inPlace({
     pattern: '*.jade',
-    engine: 'jade'
+    engine: 'pug'
   }))
   .use(rename([[/\.jade$/, '.html']]))
   .build(function(err) {

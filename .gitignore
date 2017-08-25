@@ -3,5 +3,4 @@
 **/*.map
 coverage
 test/build
-dist
 node_modules
