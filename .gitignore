@@ -2,6 +2,6 @@
 *.log
 **/*.map
 coverage
-test/build
+**/build
 dist
 node_modules
