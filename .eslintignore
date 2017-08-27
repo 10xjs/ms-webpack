@@ -1,4 +1,5 @@
 test/fixture
 dist
+**/build
 examples
 node_modules
